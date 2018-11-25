@@ -23,11 +23,13 @@ def restaurants():
 
 @app.route("/api/v1/restaurant/<id>")
 def restaurant(id):
-    restaurant = find_restaurants(mongo, id)
-    if  restaurant is None:
-            return '', http.HTTPStatus.NO_CONTENT
-        
-    return jsonify(restaurant[0])
+    if ObjectId.is_valid(id):
+        restaurant = find_restaurants(mongo, id)
+        if  not restaurant is None:
+             return jsonify(restaurant[0])
+            
+    return '', http.HTTPStatus.NO_CONTENT   
+    
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=False, port=8080)
